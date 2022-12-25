@@ -1,23 +1,27 @@
-import coloredlogs
-import logging
+from rocketry import Rocketry
+from rocketry.conds import daily
 
-coloredlogs.install()
+app = Rocketry()
 
-LOG_FILENAME = "app.log"
-logging.basicConfig(
-    filename=LOG_FILENAME,
-    force=True,
-    level=logging.INFO,
-    format="[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s",
-)
+@app.task('every 10 seconds')
+def do_constantly():
+    print('do constantly')
 
-log = logging.getLogger(__name__)
+@app.task('every 1 minute')
+def do_minutely():
+    print('do minutely')
 
+@app.task('every 1 hour')
+def do_hourly():
+    print('do hourly')
 
-def main():
-    log.info("Done")
-    pass
+@app.task('every 1 day')
+def do_daily():
+    print('do daily')
 
+@app.task('every 2 days 2 hours 20 seconds')
+def do_custom():
+    print('do custom')
 
 if __name__ == "__main__":
-    main()
+    app.run()
